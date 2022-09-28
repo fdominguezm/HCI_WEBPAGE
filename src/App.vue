@@ -1,28 +1,40 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <!-- App.vue -->
+
+  <v-app>
+
+    <v-app-bar color="blue" app>
+      <div>
+        <h3>FITLY</h3>
+        <!--      <img src="./assets/logofitly.png"/>-->
+      </div>
+      <v-spacer/>
+      <IniciarSesion/>
+    </v-app-bar>
+
+    <!-- Sizes your content based upon application components -->
+    <v-main>
+      <div>Hola</div>
+      <div>Parte 2</div>
+    </v-main>
+
+    <v-footer app>
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import IniciarSesion from "@/components/IniciarSesion";
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+  components: {
+    IniciarSesion,
+  },
+
+  data: () => ({
+    //
+  }),
+};
+</script>
