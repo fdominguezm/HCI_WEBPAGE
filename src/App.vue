@@ -3,19 +3,9 @@
 
   <v-app>
 
-    <v-app-bar color="blue" app>
-      <div>
-        <h3>FITLY</h3>
-        <!--      <img src="./assets/logofitly.png"/>-->
-      </div>
-      <v-spacer/>
-      <IniciarSesion/>
-    </v-app-bar>
-
     <!-- Sizes your content based upon application components -->
     <v-main>
-      <div>Hola</div>
-      <div>Parte 2</div>
+      <Bar/>
     </v-main>
 
     <v-footer app>
@@ -24,13 +14,13 @@
 </template>
 
 <script>
-import IniciarSesion from "@/components/IniciarSesion";
+import Bar from "@/components/Bar";
 
 export default {
   name: 'App',
 
   components: {
-    IniciarSesion,
+    Bar,
   },
 
   data: () => ({
