@@ -1,30 +1,32 @@
 <template>
-  <!-- App.vue -->
-
-  <v-app>
-
-    <!-- Sizes your content based upon application components -->
-    <v-main>
-      <Bar/>
-    </v-main>
-
-    <v-footer app>
-    </v-footer>
-  </v-app>
+  <div id="app">
+    <nav>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
+    </nav>
+    <router-view/>
+  </div>
 </template>
 
-<script>
-import Bar from "@/components/Bar";
+<style lang="scss">
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
 
-export default {
-  name: 'App',
+nav {
+  padding: 30px;
 
-  components: {
-    Bar,
-  },
+  a {
+    font-weight: bold;
+    color: #2c3e50;
 
-  data: () => ({
-    //
-  }),
-};
-</script>
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
+}
+</style>

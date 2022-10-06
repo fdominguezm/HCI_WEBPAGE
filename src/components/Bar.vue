@@ -1,7 +1,8 @@
 <template>
   <v-app>
 
-    <v-app-bar color="blue" app>
+    <v-app-bar color="blue"
+    hide-on-scroll>
       <div>
         <v-btn text>FITLY</v-btn>
         <!--      <img src="./assets/logofitly.png"/>-->
