@@ -1,17 +1,16 @@
 <template>
-  <v-app>
-
-    <v-app-bar color="blue"
-    hide-on-scroll>
+    <v-app-bar color="blue" app>
       <div>
+        <router-link class="links" to="/">
         <v-btn text>FITLY</v-btn>
-        <!--      <img src="./assets/logofitly.png"/>-->
+          </router-link>
+          <!--      <img src="./assets/logofitly.png"/>-->
       </div>
       <v-spacer/>
-      <v-btn text>Iniciar Session</v-btn>
+      <router-link class="links" to="/iniciar_sesion">
+      <v-btn text>Iniciar Sesion</v-btn>
+        </router-link>
     </v-app-bar>
-
-  </v-app>
 </template>
 
 <script>
@@ -21,8 +20,8 @@ export default {
 </script>
 
 <style scoped>
-.title{
-
+.links{
+  text-decoration: none;
 }
 
 </style>

@@ -3,31 +3,40 @@
     <v-container >
     <v-row
         justify="center"
+        class="sub-bar"
     >
       <v-col md="auto">
-        <v-btn class="button"
+        <router-link class="links" to="/ejercicios">
+          <v-fab-transition>
+          <v-btn class="button"
             color="blue "
             x-large="true"
         >
           Ejercicios
         </v-btn>
+            </v-fab-transition>
+        </router-link>
       </v-col>
       <v-col md="auto">
+        <router-link class="links" to="/crear_rutina">
         <v-btn class="button"
             color="blue"
             x-large="true"
         >
           Crear rutina
         </v-btn>
+        </router-link>
       </v-col>
 
       <v-col md="auto">
+        <router-link class="links" to="mis_rutinas">
           <v-btn class="button"
                  x-large="true"
                  color="blue"
             >
             Mis rutinas
           </v-btn>
+        </router-link>
         </v-col>
       </v-row>
     </v-container>
@@ -46,5 +55,9 @@ export default {
   font-size: 25px;
   font-weight: bold;
   color: white;
+}
+
+.links{
+  text-decoration: none;
 }
 </style>

@@ -19,6 +19,7 @@
         <v-img class="img2"
                max-height="400"
                max-width="450"
+
                src="https://www.musculaciontotal.com/wp-content/uploads/2014/09/banco-plano-con-manos-juntas.jpg.webp"
         ></v-img>
       </v-col>
@@ -28,6 +29,7 @@
         </h1>
       </v-col>
     </v-row>
+    <h2 class="bottom_text">“Da siempre lo mejor de ti. Lo que siembres hoy dará su fruto mañana”</h2>
   </div>
 </template>
 
@@ -47,6 +49,7 @@ export default {
 .img1{
   margin-left: 250px;
   margin-top: 50px;
+  border-radius: 5%;
 }
 .text2{
   margin-left: 80px;
@@ -56,5 +59,12 @@ export default {
 }
 .img2{
   margin-left: 100px;
+  border-radius: 5%;
+}
+.bottom_text {
+  font-weight: bold;
+  text-align: center;
+  font-size: xx-large;
+  margin-top: 100px;
 }
 </style>
