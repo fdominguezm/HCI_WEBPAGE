@@ -1,10 +1,16 @@
 <template>
-<div></div>
+<div>
+  <v-main>
+    <ListaEjercicios/>
+  </v-main>
+</div>
 </template>
 
 <script>
+import ListaEjercicios from "@/components/ListaEjercicios";
 export default {
-  name: "EjerciciosView"
+  name: "EjerciciosView",
+  components: { ListaEjercicios}
 }
 </script>
 

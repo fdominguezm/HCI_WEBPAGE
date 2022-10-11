@@ -3,18 +3,15 @@
     <v-container >
     <v-row
         justify="center"
-        class="sub-bar"
     >
       <v-col md="auto">
         <router-link class="links" to="/ejercicios">
-          <v-fab-transition>
           <v-btn class="button"
             color="blue "
             x-large="true"
         >
           Ejercicios
         </v-btn>
-            </v-fab-transition>
         </router-link>
       </v-col>
       <v-col md="auto">

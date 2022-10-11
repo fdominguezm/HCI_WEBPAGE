@@ -1,10 +1,16 @@
 <template>
-<div></div>
+<div>
+  <v-main>
+    <AgregarEjercicioMenu/>
+  </v-main>
+</div>
 </template>
 
 <script>
+import AgregarEjercicioMenu from "@/components/AgregarEjercicioMenu";
 export default {
-  name: "CrearRutinaView"
+  name: "CrearRutinaView",
+  components: {AgregarEjercicioMenu}
 }
 </script>
 
