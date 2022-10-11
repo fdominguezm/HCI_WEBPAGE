@@ -5,6 +5,7 @@ import EjerciciosView from "@/views/EjerciciosView";
 import CrearRutinaView from "@/views/CrearRutinaView";
 import MisRutinasView from "@/views/MisRutinasView";
 import IniciarSesionView from "@/views/IniciarSesionView";
+import RegistrarseView from "@/views/RegistrarseView";
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,11 @@ const routes = [
     path: '/iniciar_sesion',
     name: 'iniciar_sesion',
     component: IniciarSesionView
+  },
+  {
+    path: '/registrarse',
+    name: 'registrarse',
+    component: RegistrarseView
   }
 ]
 
