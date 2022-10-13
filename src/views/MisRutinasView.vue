@@ -1,10 +1,19 @@
 <template>
-<div></div>
+<div>
+      <v-main>
+        <SubBar/>
+      </v-main>
+</div>
 </template>
 
 <script>
+import SubBar from '@/components/SubBar.vue'
+
 export default {
-  name: "MisRutinasView"
+  name: "MisRutinasView",
+  components:{
+    SubBar,
+  }
 }
 </script>
 

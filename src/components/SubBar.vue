@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <v-container >
     <v-row
         justify="center"
@@ -7,8 +7,8 @@
       <v-col md="auto">
         <router-link class="links" to="/ejercicios">
           <v-btn class="button"
-            color="blue "
             x-large="true"
+                 color = #003D75
         >
           Ejercicios
         </v-btn>
@@ -17,8 +17,8 @@
       <v-col md="auto">
         <router-link class="links" to="/crear_rutina">
         <v-btn class="button"
-            color="blue"
             x-large="true"
+               color = #003D75
         >
           Crear rutina
         </v-btn>
@@ -29,8 +29,8 @@
         <router-link class="links" to="mis_rutinas">
           <v-btn class="button"
                  x-large="true"
-                 color="blue"
-            >
+                 color = #003D75
+          >
             Mis rutinas
           </v-btn>
         </router-link>
@@ -53,6 +53,8 @@ export default {
   font-weight: bold;
   color: white;
 }
+
+
 
 .links{
   text-decoration: none;

@@ -1,47 +1,65 @@
 <template>
+  <v-app>
 <div class = "logIn">
   <div class = "img">
     <v-img class = "img1"
            :src = "require(`@/assets/user_logo.png`)"
+           transition = "false"
     />
   </div>
   <v-divider
     />
   <h1 class = "mainTitle">INICIAR SESION</h1>
   <v-text-field
-    solo = true
-    outlined = true
-    label="Escriba su nombre de usuario aqui"
-    class = "textField"
-    prefix="USUARIO"
+      solo = true
+      outlined = true
+      label="Ingrese su nombre de usuario aqui"
+      class = "textField"
+      background-color= #6797C5
+      color="white"
+      prepend-inner-icon="mdi-account-box"
   />
   <v-text-field
       solo = true
       outlined = true
-      label="Escriba su contrasena aqui"
+      label="Ingrese su contraseña aqui"
       class ="textField"
-      prefix="CONTRASENA"
+      background-color= #6797C5
+      color = "white"
+      prepend-inner-icon="mdi-lock"
   />
-  <div class = "btn1">
-    <router-link class="links" to="/">
-    <v-btn
-        elevation="3"
-        rounded
-        color="blue"
-        x-large>INICIE SESION
-    </v-btn>
-    </router-link>
-    <router-link class="links" to="/mis_rutinas">
-      <v-btn >
-        No estas registrado? Registrate aqui
+
+  <div class = "alignBtn">
+    <v-row justify="center">
+    <v-col md="auto">
+      <v-btn
+          class = "btn1"
+          elevation="3"
+          rounded
+          color= #003D75
+          x-large
+          to = "/">INICIE SESION
+      </v-btn>
+    </v-col>
+
+      <v-col md="auto">
+        <v-checkbox label = "¿Recordar la sesion?"
+                    />
+      </v-col>
+    </v-row>
+  </div>
+  <div class = "alignBtn">
+
+  <router-link class="links" to="/registrarse">
+      <v-btn
+      plain>
+        ¿No estas registrado? Registrate aqui
       </v-btn>
     </router-link>
   </div>
 
-  <v-main>
-
-  </v-main>
-</div>
+  </div>
+  </v-app>
 </template>
 
 <script>
@@ -52,7 +70,7 @@ export default {
 
 <style scoped>
   .logIn{
-    margin-top: 200px;
+    margin-top: 10rem;
   }
 
   .mainTitle{
@@ -65,6 +83,11 @@ export default {
   }
 
   .btn1{
+    color: white;
+    width: 15rem;
+  }
+
+  .alignBtn{
     text-align: center;
   }
 

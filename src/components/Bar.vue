@@ -1,14 +1,18 @@
 <template>
-    <v-app-bar color="blue" app>
+    <v-app-bar color=#003D75 app>
       <div>
         <router-link class="links" to="/">
-        <v-btn text>FITLY</v-btn>
-          </router-link>
+          <v-btn text color="white">FITLY</v-btn>
+        </router-link>
           <!--      <img src="./assets/logofitly.png"/>-->
       </div>
       <v-spacer/>
       <router-link class="links" to="/iniciar_sesion">
-      <v-btn text>Iniciar Sesion</v-btn>
+      <v-btn text color="white">Iniciar Sesion
+        <v-icon x-large>
+          mdi-account-circle
+        </v-icon>
+      </v-btn>
         </router-link>
     </v-app-bar>
 </template>
