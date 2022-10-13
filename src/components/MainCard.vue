@@ -1,5 +1,6 @@
 <template>
   <div>
+    <v-divider/>
     <v-row>
       <v-col>
         <h1 class="text1">
@@ -14,6 +15,7 @@
         ></v-img>
       </v-col>
     </v-row>
+    <v-divider/>
     <v-row>
       <v-col>
         <v-img class="img2"
@@ -29,6 +31,7 @@
         </h1>
       </v-col>
     </v-row>
+    <v-divider/>
     <h2 class="bottom_text">“Da siempre lo mejor de ti. Lo que siembres hoy dará su fruto mañana”</h2>
   </div>
 </template>

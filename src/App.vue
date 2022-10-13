@@ -16,11 +16,16 @@
 <script>
 import Bar from '@/components/Bar.vue'
 // import SubBar from "@/components/SubBar";
+import {useSecurityStore} from "@/store/SecurityStore";
 
 export default {
   name: 'App',
   components: {
     Bar,
+  },
+  async created() {
+    const securityStore = useSecurityStore();
+    await securityStore.initialize();
   }
 }
 </script>
