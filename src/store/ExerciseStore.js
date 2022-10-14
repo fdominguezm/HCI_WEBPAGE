@@ -36,9 +36,9 @@ export const useExerciseStore = defineStore("exercise", {
                 this.replace(index, result);
             return result;
         },
-        async delete(exercise) {
-            await ExerciseApi.delete(exercise.id);
-            const index = this.findIndex(exercise);
+        async delete(id) {
+            await ExerciseApi.delete(id);
+            const index = this.findIndex(id);
             if (index >= 0)
                 this.splice(index);
         },

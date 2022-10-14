@@ -7,17 +7,23 @@
       <v-card-subtitle>
         Complete todos los campos requeridos para agregar su nuevo ejercicio.
       </v-card-subtitle>
+      <v-form ref="form"
+      v-model="valid"
+      lazy-validation>
       <v-card-actions>
         <v-row>
           <v-col>
             <v-text-field label="Nombre"
+                          :rules="nameRule"
                           v-model="exerciseName"
             >
             </v-text-field>
           </v-col>
           <v-col>
             <v-text-field
-                label="Descripción">
+                label="Descripción"
+                :rules="descriptionRule"
+                v-model="exerciseDesc">
             </v-text-field>
           </v-col>
         </v-row>
@@ -27,7 +33,9 @@
         <v-row>
           <v-col>
             <v-select label="Tipo de ejercicio"
-                :items="exerciseTypes">
+                :items="exerciseTypes"
+                :rules="typeRule"
+                      v-model="exerciseType">
             </v-select>
           </v-col>
         </v-row>
@@ -48,13 +56,19 @@
         </v-row>
       </v-card-actions>
           <v-card-actions>
-        <v-btn @click="closeButton()">
-          Cerrar
+        <v-btn @click="showCard()">
+          Close
         </v-btn>
-            <v-btn @click="addExercise()">
-              Agregar
+            <v-btn :disabled="editing"
+                @click="addExercise()">
+              Add
+            </v-btn>
+            <v-btn :disabled="!editing"
+                @click="editExercise()">
+              Edit
             </v-btn>
       </v-card-actions>
+        </v-form>
     </v-card>
     </v-overlay>
     </div>
@@ -72,7 +86,7 @@
             class="text--primary"
             fab
             small
-            @click="openCard()"
+            @click="isAdding(), showCard(null,'','','')"
         >
           <v-icon>mdi-plus</v-icon>
         </v-btn>
@@ -104,9 +118,18 @@
           </v-list-item-content>
 
           <v-list-item-action>
-            <v-icon small>
-              mdi-open-in-new
+            <div>
+            <v-btn text x-small @click="isEditing(), showCard(item.id, item.name, item.detail, item.type)">
+            <v-icon >
+              mdi-pencil
             </v-icon>
+              </v-btn>
+            <v-btn text x-small @click="deleteExercise(item.id)">
+              <v-icon >
+                mdi-delete
+              </v-icon>
+            </v-btn>
+            </div>
           </v-list-item-action>
         </v-list-item>
 
@@ -120,20 +143,31 @@
 import {mapState, mapActions} from 'pinia';
 import {useSecurityStore} from "@/store/SecurityStore";
 import {useExerciseStore} from "@/store/ExerciseStore";
+import {Exercise} from "@/api/exercise";
 
 
 export default {
   name: "ExerciseList",
   data() {
     return {
-      benched: 0,
-      exerciseCard: false,
-      exerciseTypes: ["Exercise", "Rest"],
       exerciseName: "",
       exerciseDesc: "",
-      added: true,
-      closed: true,
+      exerciseType: "",
+      currentId: null,
+      valid : true,
+      editing: false,
+      benched: 0,
+      exerciseCard: false,
+      exerciseTypes: ["exercise", "rest"],
       controller: null,
+      nameRule: [n => !!n || 'Name is required'],
+      descriptionRule: [d => !!d || 'Description is required'],
+      typeRule: [t => !!t || 'Type is required']
+    }
+  },
+  watch: {
+    $items(newItem) {
+      return newItem
     }
   },
   computed: {
@@ -163,36 +197,61 @@ export default {
             }
         },
 // functions
-    openCard() {
-      this.exerciseCard = true;
-    },
-    showCard() {
-      if (this.closed == true && this.added == true) {
+    showCard(id,exerciseName, exerciseDesc, exerciseType,) {
+      if (this.exerciseCard == true) {
         this.exerciseCard = false;
       } else {
+        this.currentId = id;
+        this.exerciseName = exerciseName;
+        this.exerciseDesc = exerciseDesc;
+        this.exerciseType = exerciseType;
         this.exerciseCard = true;
       }
     },
-    addExercise() {
-      if (this.exerciseName.length != 0) {
-        this.added = true;
-        this.closed = false;
-      } else {
-        this.added = false;
+    async addExercise() {
+      if(this.validate()) {
+        try {
+          this.showCard()
+          const exercise = new Exercise(null, this.exerciseName, this.exerciseDesc, this.exerciseType)
+          await this.$create(exercise)
+          this.$getAll();
+
+        } catch (e) {
+          console.log(e)
+        }
       }
-      this.showCard();
+      return;
+
     },
 
-    closeButton() {
-      this.added = true;
-      this.closed = true;
-      this.showCard();
-    }
+    isEditing() {
+      this.editing = true
+    },
+
+    isAdding() {
+      this.editing = false
+    },
+
+    async deleteExercise(id) {
+      await this.$delete(id)
+      this.$getAll()
+    },
+
+    async editExercise() {
+      const exercise = new Exercise(this.currentId, this.exerciseName, this.exerciseDesc, this.exerciseType);
+      await this.$modify(exercise);
+      this.$getAll()
+      this.showCard()
+    },
+
+    validate() {
+      return this.$refs.form.validate()
+    },
   },
   async created() {
     const exerciseStore = useExerciseStore();
     await exerciseStore.getAll();
-  }
+  },
 }
 
 </script>
