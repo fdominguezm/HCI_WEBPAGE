@@ -24,7 +24,8 @@ class ExerciseApi {
   }
 
   static async getAll(controller) {
-    return await Api.get(ExerciseApi.getUrl(), true, controller);
+    const result = await Api.get(`${Api.baseUrl}/exercises?page=0&size=1&orderBy=id&direction=asc`, true, controller);
+    return await Api.get(`${Api.baseUrl}/exercises?page=0&size=${result.totalCount}&orderBy=id&direction=asc`, true, controller);
   }
 }
 

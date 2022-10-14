@@ -53,7 +53,8 @@ export const useExerciseStore = defineStore("exercise", {
         },
         async getAll (controller) {
             const result = await ExerciseApi.getAll(controller);
-            return result;
+            this.items = result.content;
+            return this.items;
         }
     }
 })

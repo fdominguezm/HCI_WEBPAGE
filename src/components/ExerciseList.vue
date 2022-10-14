@@ -80,25 +80,26 @@
       </v-card>
     <v-virtual-scroll max-width="300"
         :bench="benched"
-        :items="items"
+        :items="$items"
         height="600"
         item-height="64"
     >
       <template v-slot:default="{ item }">
-        <v-list-item :key="item">
+        <v-list-item :key="item.id">
           <v-list-item-action>
             <v-btn
                 fab
                 small
                 color="primary"
             >
-              {{ item }}
+              {{ item.id }}
             </v-btn>
           </v-list-item-action>
 
           <v-list-item-content>
             <v-list-item-title>
-              Ejercicio <strong>N {{ item }}</strong>
+              <!-- Ejercicio <strong>N {{ item.id }}</strong> -->
+              {{item.name}}
             </v-list-item-title>
           </v-list-item-content>
 
@@ -116,6 +117,11 @@
 </template>
 
 <script>
+import {mapState, mapActions} from 'pinia';
+import {useSecurityStore} from "@/store/SecurityStore";
+import {useExerciseStore} from "@/store/ExerciseStore";
+
+
 export default {
   name: "ExerciseList",
   data() {
@@ -126,21 +132,36 @@ export default {
       exerciseName: "",
       exerciseDesc: "",
       added: true,
-      closed: true
+      closed: true,
+      controller: null,
     }
   },
   computed: {
-    items() {
-      return Array.from({length: this.length},
-          function (k, v) {
-                 return v + 1
-      })
-    },
-    length() {
-      return 70
-    },
+    ...mapState(useSecurityStore, {
+      $isLoggedIn: 'isLoggedIn'
+    }),
+    ...mapState(useExerciseStore, {
+      $items: state => state.items
+    }),
   },
   methods: {
+    ...mapActions(useExerciseStore, {
+        $create: 'create',
+        $modify: 'modify',
+        $delete: 'delete',
+        $get: 'get',
+        $getAll: 'getAll',
+      }),
+      async getAllExercises() {
+            try {
+                this.controller = new AbortController()
+                const exercise = await this.$getAllExercises(this.controller);
+                this.controller = null
+                this.setResult(exercise)
+            } catch(e) {
+                this.setResult(e)
+            }
+        },
 // functions
     openCard() {
       this.exerciseCard = true;
@@ -167,6 +188,10 @@ export default {
       this.closed = true;
       this.showCard();
     }
+  },
+  async created() {
+    const exerciseStore = useExerciseStore();
+    await exerciseStore.getAll();
   }
 }
 
