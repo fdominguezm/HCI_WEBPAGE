@@ -20,6 +20,7 @@
             class = "textField"
             background-color= #6797C5
             color="white"
+            v-model="firstName"
         />
         <h4>Nombre de usuario</h4>
         <v-text-field
@@ -29,6 +30,7 @@
             class = "textField"
             background-color= #6797C5
             color="white"
+            v-model="username"
         />
         <h4>Contraseña</h4>
         <v-text-field
@@ -38,6 +40,10 @@
             class = "textField"
             background-color= #6797C5
             color="white"
+            v-model="password"
+            :type = "showPassword?'text':'password'"
+            :append-icon = "showPassword?'mdi-eye':'mdi-eye-off'"
+            @click:append = "showPassword = !showPassword"
         />
       </v-col>
       <v-col md = "auto">
@@ -49,6 +55,7 @@
             class ="textField"
             background-color= #6797C5
             color = "white"
+            v-model="lastName"
         />
         <h4>E-mail</h4>
         <v-text-field
@@ -58,6 +65,7 @@
             class ="textField"
             background-color= #6797C5
             color = "white"
+            v-model="email"
         />
         <h4>Repita su contraseña</h4>
 
@@ -68,6 +76,11 @@
             class ="textField"
             background-color= #6797C5
             color = "white"
+            v-model="confirmedPassword"
+            :type = "showPassword?'text':'password'"
+            :append-icon = "showPassword?'mdi-eye':'mdi-eye-off'"
+            @click:append = "showPassword = !showPassword"
+            :error-messages= "error?'Las contraseñas no coinciden': null "
         />
       </v-col>
     </v-row>
@@ -78,7 +91,8 @@
           rounded
           color = #003D75
           x-large
-          to = "/iniciar_sesion">REGISTRESE
+          @click="register()"
+          >REGISTRESE
       </v-btn>
     </div>
     <div class="alignBtn">
@@ -94,19 +108,109 @@
 
     </v-main>
   </div>
+    <v-overlay v-if="emailSent"
+    light>
+      <v-card  class="verify" height="15rem" width="35rem">
+        <h1 class = "mainTitle">Verifique la cuenta ingresando el codigo que recibio por mail</h1>
+        <v-otp-input
+            length="6"
+            v-model="code"
+        />
+        <v-row justify="center">
+        <v-btn class = "btn1"
+               elevation="3"
+               rounded
+               color = #003D75
+               x-large
+        @click="verifyMail()">
+          LISTO
+        </v-btn>
+        <v-btn class = "btn1"
+               elevation="3"
+               rounded
+               color = #003D75
+               x-large
+        @click="resendEmail()">
+          REENVIAR CODIGO
+        </v-btn>
+        </v-row>
+      </v-card>
+    </v-overlay>
+
   </v-app>
 </template>
 
 <script>
 
+import {useSecurityStore} from "@/store/SecurityStore";
+import {mapActions} from "pinia";
+import {UserApi} from "@/api/user";
+import router from "@/router";
+
 export default {
-  name: "RegistrarseView"
+  name: "RegistrarseView",
+
+  data(){
+    return{
+      username: "",
+      password: "",
+      confirmedPassword: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      emailSent: false,
+      code: "",
+      showPassword: false,
+      error: false,
+    }
+  },
+
+  methods: {
+    ...mapActions(useSecurityStore,{
+      $register: 'register',
+    }),
+
+    async register () {
+      try {
+        if (this.password == this.confirmedPassword) {
+          await UserApi.register(this.username, this.password, this.firstName, this.lastName, this.email);
+          this.emailSent = true;
+        }else {
+          this.error = true;
+        }
+      } catch (e) {
+        this.result = JSON.stringify(e);
+      }
+    },
+    async verifyMail () {
+      try {
+        await UserApi.verifyEmail(this.email, this.code);
+        router.push("/iniciar_sesion")
+      } catch (e) {
+        this.result = JSON.stringify(e);
+      }
+    },
+
+    async resendEmail(){
+      try{
+        await UserApi.resendEmail(this.email);
+      }catch (e) {
+        this.result = JSON.stringify(e);
+      }
+    }
+  }
+
 }
 </script>
 
 <style scoped>
 .register{
   margin-top: 10rem;
+}
+
+.verify{
+  align-self: center;
+  margin-top: 0;
 }
 
 .img1{
@@ -129,6 +233,7 @@ export default {
 .btn1{
   color: white;
   width: 15rem;
+  margin: auto;
 }
 
 

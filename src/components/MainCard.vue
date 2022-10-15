@@ -1,10 +1,11 @@
 <template>
   <div>
-    <v-divider/>
+
+    <v-card outlined>
     <v-row>
       <v-col>
         <h1 class="text1">
-          Crea tu proxima rutina de la manera mas simple posible,<p></p> comenza clickeando en “Crear rutina”
+          Crea tu proxima rutina de la manera mas simple posible, comenza clickeando en “Crear rutina”
         </h1>
       </v-col>
       <v-col>
@@ -15,7 +16,8 @@
         ></v-img>
       </v-col>
     </v-row>
-    <v-divider/>
+    </v-card>
+
     <v-row>
       <v-col>
         <v-img class="img2"
@@ -31,7 +33,6 @@
         </h1>
       </v-col>
     </v-row>
-    <v-divider/>
     <h2 class="bottom_text">“Da siempre lo mejor de ti. Lo que siembres hoy dará su fruto mañana”</h2>
   </div>
 </template>

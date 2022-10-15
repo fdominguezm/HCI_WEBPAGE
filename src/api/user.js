@@ -19,8 +19,8 @@ class UserApi {
         return Api.get(UserApi.getUrl('current'), true, controller);
     }
     
-    static async register(username, password, email) {
-        const data = {username: username, password: password, email: email};
+    static async register(username, password, firstName, lastName, email) {
+        const data = {username: username, password: password,firstName: firstName, lastName: lastName, email: email};
         return await Api.post(UserApi.getUrl(), false, data);
     }
 
