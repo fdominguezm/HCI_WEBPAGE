@@ -2,7 +2,12 @@
     <v-app-bar color=#003D75 app>
       <div>
         <router-link class="links" to="/">
-          <v-btn text color="white">FITLY</v-btn>
+          <v-btn text class="fitlyTitle">FITLY
+          <v-icon color="black"
+                  large>
+            mdi-dumbbell
+          </v-icon>
+          </v-btn>
         </router-link>
           <!--      <img src="./assets/logofitly.png"/>-->
       </div>
@@ -35,13 +40,6 @@
                    plain
             >
               Mi cuenta
-            </v-btn>
-          </v-list-item>
-          <v-list-item>
-            <v-btn plain
-                    to="/about_view"
-                   color="white">
-              Sobre Fitly
             </v-btn>
           </v-list-item>
           <v-list-item>
@@ -97,6 +95,11 @@ export default {
 </script>
 
 <style scoped>
+.fitlyTitle{
+  color: white;
+  font-size: x-large;
+}
+
 .links{
   text-decoration: none;
 }

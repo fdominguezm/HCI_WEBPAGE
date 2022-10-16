@@ -3,16 +3,11 @@
   <div class = "register">
     <div class = "img">
       <v-img class = "img1"
-             :src = "require(`@/assets/register_logo.png`)"
+             :src = "require(`@/assets/register_logo.jpg`)"
       />
     </div>
-        <v-divider inset
-        />
-      <v-col md="auto">
         <h1 class = "mainTitle">REGISTRARSE</h1>
-      </v-col>
-
-        <v-divider inset
+        <v-divider
         />
 
     <v-row justify="center">
