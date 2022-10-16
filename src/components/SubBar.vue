@@ -7,7 +7,7 @@
       <v-col md="auto">
         <router-link class="links" to="/ejercicios">
           <v-btn class="button"
-            x-large="true"
+            x-large
                  color = #003D75
         >
           Ejercicios
@@ -15,20 +15,20 @@
         </router-link>
       </v-col>
       <v-col md="auto">
-        <router-link class="links" to="/crear_rutina">
+        <router-link class="links" to="/todas_las_rutinas">
         <v-btn class="button"
-            x-large="true"
+            x-large
                color = #003D75
         >
-          Crear rutina
+          Rutinas
         </v-btn>
         </router-link>
       </v-col>
 
       <v-col md="auto">
-        <router-link class="links" to="mis_rutinas">
+        <router-link class="links" to="/mis_rutinas">
           <v-btn class="button"
-                 x-large="true"
+                 x-large
                  color = #003D75
           >
             Mis rutinas

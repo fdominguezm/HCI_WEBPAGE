@@ -2,11 +2,14 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import EjerciciosView from "@/views/EjerciciosView";
-import CrearRutinaView from "@/views/CrearRutinaView";
+import TodasLasRutinas from "@/views/TodasLasRutinas";
 import MisRutinasView from "@/views/MisRutinasView";
 import IniciarSesionView from "@/views/IniciarSesionView";
 import RegistrarseView from "@/views/RegistrarseView";
 import PerfilView from "@/views/PerfilView";
+import RutinaView from "@/views/RutinaView";
+import CiclosRutina from "@/components/CiclosRutina";
+import EjerciciosCiclo from "@/components/EjerciciosCiclo";
 
 Vue.use(VueRouter)
 
@@ -30,9 +33,9 @@ const routes = [
     component: EjerciciosView
   },
   {
-    path: '/crear_rutina',
-    name: 'crear_rutina',
-    component: CrearRutinaView
+    path: '/todas_las_rutinas',
+    name: 'todas_las_rutinas',
+    component: TodasLasRutinas
   },
   {
     path: '/mis_rutinas',
@@ -53,6 +56,25 @@ const routes = [
     path: '/perfil',
     name: 'perfil',
     component: PerfilView
+  },
+  {
+    path: '/rutina/:id',
+    component: RutinaView,
+    children: [
+      {
+        path: '',
+        name: 'routine',
+        props: true,
+        component: CiclosRutina,
+        children: [
+          {
+          path: 'ciclo/:cycleId', 
+          name:'cycle', 
+          props: true, 
+          component: EjerciciosCiclo
+        }]
+      }
+    ]
   }
 ]
 

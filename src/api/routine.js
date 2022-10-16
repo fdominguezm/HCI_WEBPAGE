@@ -12,69 +12,77 @@ class RoutineApi {
        }
      
        static async modify(routine, controller) {
-         return await Api.put(RoutineApi.getUrl(routine.id), true, routine, controller);
+        return await Api.put(RoutineApi.getUrl(routine.id), true, routine, controller);
        }
      
        static async delete(id, controller) {
-         return await Api.delete(RoutineApi.getUrl(id), true, controller);
+        return await Api.delete(RoutineApi.getUrl(id), true, controller);
        }
      
        static async get(id, controller) {
-         return await Api.get(RoutineApi.getUrl(id), true,  controller);
+        return await Api.get(RoutineApi.getUrl(id), true,  controller);
        }
      
+       static async getMyRoutines(controller) {
+        const result = await Api.get(`${Api.baseUrl}/users/current/routines?page=0&size=1&orderBy=date&direction=asc`, true, controller);
+        return await Api.get(`${Api.baseUrl}/users/current/routines?page=0&size=${result.totalCount}&orderBy=date&direction=asc`, true, controller);
+       }
        static async getAll(controller) {
-         return await Api.get(RoutineApi.getUrl(), true, controller);
+        const result = await Api.get(`${Api.baseUrl}/routines?page=0&size=1&orderBy=id&direction=asc`, true, controller);
+        return await Api.get(`${Api.baseUrl}/routines?page=0&size=${result.totalCount}&orderBy=id&direction=asc`, true, controller);
        }
 }
 
 class RoutineCycleApi {
-    static getUrl(id = 1, slug) {
-        return `${Api.baseUrl}/routines/${id}/cycles/${ slug ? `/${slug}` : ""}`;
+    static getUrl(id, slug) {
+        return `${Api.baseUrl}/routines/${id}/cycles${ slug ? `/${slug}` : ""}`;
     }
     static async add(routineId, routineCycle, controller) {
-        return await Api.post(RoutineApi.getUrl(routineId), true, routineCycle, controller);
+        return await Api.post(RoutineCycleApi.getUrl(routineId), true, routineCycle, controller);
     }
     
     static async modify(routineId, routineCycle, controller) {
-        return await Api.put(RoutineApi.getUrl(routineId, routineCycle.id), true, routineCycle, controller);
+        return await Api.put(RoutineCycleApi.getUrl(routineId, routineCycle.id), true, routineCycle, controller);
     }
     
     static async delete(routineId, id, controller) {
-        return await Api.delete(RoutineApi.getUrl(routineId, id), true, controller);
+        return await Api.delete(RoutineCycleApi.getUrl(routineId, id), true, controller);
     }
     
     static async get(routineId, id, controller) {
-        return await Api.get(RoutineApi.getUrl(routineId, id), true,  controller);
+        return await Api.get(RoutineCycleApi.getUrl(routineId, id), true,  controller);
     }
     
     static async getAll(routineId, controller) {
-        return await Api.get(RoutineApi.getUrl(routineId), true, controller);
+        const result = await Api.get(`${Api.baseUrl}/routines/${routineId}/cycles?page=0&size=1&orderBy=id&direction=asc`, true, controller);
+        return await Api.get(`${Api.baseUrl}/routines/${routineId}/cycles?page=0&size=${result.totalCount}&orderBy=order&direction=asc`, true, controller);
     }
 }
 
 class CycleExerciseApi {
     static getUrl(id = 1, slug) {
-        return `${Api.baseUrl}/cycles/${id}/exercises/${ slug ? `/${slug}` : ""}`;
+        return `${Api.baseUrl}/cycles/${id}/exercises${ slug ? `/${slug}` : ""}`;
     }
     static async add(cycleId, exerciseId, duration, controller) {
-        return await Api.post(RoutineApi.getUrl(cycleId, exerciseId), true, duration, controller);
+        return await Api.post(CycleExerciseApi.getUrl(cycleId, exerciseId), true, duration, controller);
     }
     
     static async modify(cycleId, exerciseId, duration, controller) {
-        return await Api.put(RoutineApi.getUrl(cycleId, exerciseId), true, duration, controller);
+        return await Api.put(CycleExerciseApi.getUrl(cycleId, exerciseId), true, duration, controller);
     }
     
     static async delete(cycleId, exerciseId, controller) {
-        return await Api.delete(RoutineApi.getUrl(cycleId, exerciseId), true, controller);
+        return await Api.delete(CycleExerciseApi.getUrl(cycleId, exerciseId), true, controller);
     }
     
     static async get(cycleId, exerciseId, controller) {
-        return await Api.get(RoutineApi.getUrl(cycleId, exerciseId), true,  controller);
+        return await Api.get(CycleExerciseApi.getUrl(cycleId, exerciseId), true,  controller);
     }
     
     static async getAll(cycleId, controller) {
-        return await Api.get(RoutineApi.getUrl(cycleId), true, controller);
+        const result = await Api.get(`${Api.baseUrl}/cycles/${cycleId}/exercises?page=0&size=1&orderBy=order&direction=asc`, true, controller);
+        return await Api.get(`${Api.baseUrl}/cycles/${cycleId}/exercises?page=0&size=${result.totalCount}&orderBy=order&direction=asc`, true, controller);
+        // return await Api.get(`${Api.baseUrl}/cycles/${cycleId}/exercises`, true, controller);
     }
 }
 
