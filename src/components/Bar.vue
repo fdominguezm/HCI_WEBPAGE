@@ -20,7 +20,8 @@
               dark
               v-bind="attrs"
               v-on="on"
-          > USERNAME
+          >
+            BIENVENIDO
             <v-icon x-large>
               mdi-account-circle
             </v-icon>
@@ -46,7 +47,8 @@
           <v-list-item>
             <v-btn plain
                     color="white"
-                    @click="this.logout()">
+                   to="/"
+                    @click="logout()">
             Cerrar Sesion
           </v-btn>
           </v-list-item>
@@ -60,7 +62,7 @@
 </template>
 
 <script>
-import {mapState} from "pinia";
+import {mapActions, mapState} from "pinia";
 import {useSecurityStore} from "@/store/SecurityStore";
 
 export default {
@@ -71,18 +73,24 @@ export default {
       $user: state => state.user,
     }),
     ...mapState(useSecurityStore, {
-      $isLoggedIn: 'isLoggedIn'
+      $isLoggedIn: 'isLoggedIn',
     }),
-    getUsername(){
-      return this.$user.username
-    }
   },
-  methods:{
-    async logout(){
-      await this.user.logout();
-      this.$isLoggedIn = false;
+
+  methods: {
+    ...mapActions(useSecurityStore, {
+      $getCurrentUser: 'getCurrentUser',
+      $login: 'login',
+      $logout: 'logout',
+    }),
+    async logout() {
+      await this.$logout()
+    },
+    async getCurrentUser() {
+      await this.$getCurrentUser()
     }
   }
+
 }
 
 

@@ -6,9 +6,14 @@
              :src = "require(`@/assets/register_logo.png`)"
       />
     </div>
-    <v-divider inset
-    />
-    <h1 class = "mainTitle">REGISTRARSE</h1>
+        <v-divider inset
+        />
+      <v-col md="auto">
+        <h1 class = "mainTitle">REGISTRARSE</h1>
+      </v-col>
+
+        <v-divider inset
+        />
 
     <v-row justify="center">
       <v-col md = "auto">
@@ -31,7 +36,20 @@
             background-color= #6797C5
             color="white"
             v-model="username"
+            :error-messages= "usernameError?'El nombre de usuario ya existe': null "
         />
+
+        <h4>Numero de telefono</h4>
+        <v-text-field
+            solo = true
+            outlined = true
+            label="Ingrese su numero de telefono aqui"
+            class ="textField"
+            background-color= #6797C5
+            color = "white"
+            v-model="phone"
+        />
+
         <h4>Contraseña</h4>
         <v-text-field
             solo = true
@@ -67,6 +85,19 @@
             color = "white"
             v-model="email"
         />
+
+        <h4>Genero</h4>
+        <v-text-field
+            solo = true
+            outlined = true
+            label="Ingrese su apodo aqui"
+            class ="textField"
+            background-color= #6797C5
+            color = "white"
+            v-model="gender"
+            hint="El genero puede ser male, female o other"
+        />
+
         <h4>Repita su contraseña</h4>
 
         <v-text-field
@@ -80,7 +111,7 @@
             :type = "showPassword?'text':'password'"
             :append-icon = "showPassword?'mdi-eye':'mdi-eye-off'"
             @click:append = "showPassword = !showPassword"
-            :error-messages= "error?'Las contraseñas no coinciden': null "
+            :error-messages= "passwordError?'Las contraseñas no coinciden': null "
         />
       </v-col>
     </v-row>
@@ -104,9 +135,6 @@
       </router-link>
     </div>
 
-    <v-main>
-
-    </v-main>
   </div>
     <v-overlay v-if="emailSent"
     light>
@@ -158,10 +186,13 @@ export default {
       firstName: "",
       lastName: "",
       email: "",
+      phone: "",
+      gender: "",
       emailSent: false,
       code: "",
       showPassword: false,
-      error: false,
+      passwordError: false,
+      usernameError: false,
     }
   },
 
@@ -173,13 +204,19 @@ export default {
     async register () {
       try {
         if (this.password == this.confirmedPassword) {
-          await UserApi.register(this.username, this.password, this.firstName, this.lastName, this.email);
+          await UserApi.register(this.username, this.password, this.firstName, this.lastName, this.email, this.phone, this.gender);
           this.emailSent = true;
         }else {
-          this.error = true;
+          this.passwordError = true;
         }
+
       } catch (e) {
         this.result = JSON.stringify(e);
+        if(e.code == 2){
+          if(e.details == "UNIQUE constraint failed: User.username"){
+              this.usernameError = true;
+          }
+        }
       }
     },
     async verifyMail () {

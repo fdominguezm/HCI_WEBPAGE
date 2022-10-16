@@ -19,8 +19,8 @@ class UserApi {
         return Api.get(UserApi.getUrl('current'), true, controller);
     }
     
-    static async register(username, password, firstName, lastName, email) {
-        const data = {username: username, password: password,firstName: firstName, lastName: lastName, email: email};
+    static async register(username, password, firstName, lastName, email, phone,gender) {
+        const data = {username: username, password: password,firstName: firstName, lastName: lastName, email: email, phone: phone,gender:gender};
         return await Api.post(UserApi.getUrl(), false, data);
     }
 
@@ -30,6 +30,11 @@ class UserApi {
 
     static async verifyEmail (email, code) {
         return await Api.post(UserApi.getUrl('verify_email'), false, {email: email, code: code});
+    }
+
+    static async modifiyUser(firstName, lastName, phone, gender){
+        const data = {firstName: firstName, lastName: lastName, phone: phone, gender:gender};
+        return await Api.put(UserApi.getUrl('current'),true,data);
     }
 }
 

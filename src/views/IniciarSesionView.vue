@@ -3,13 +3,14 @@
 <div class = "logIn">
   <div class = "img">
     <v-img class = "img1"
-           :src = "require(`@/assets/user_logo.png`)"
+           :src = "require(`@/assets/user_logo.jpg`)"
            transition = "false"
     />
   </div>
-  <v-divider
-    />
   <h1 class = "mainTitle">INICIAR SESION</h1>
+  <v-divider
+  />
+  <v-col md="auto">
   <v-text-field
       solo = true
       outlined = true
@@ -54,6 +55,7 @@
       </v-col>
     </v-row>
   </div>
+  </v-col>
   <div class = "alignBtn">
 
   <router-link class="links" to="/registrarse">
@@ -64,6 +66,12 @@
     </router-link>
   </div>
   </div>
+    <v-alert v-if="this.incorrectPassword"
+              type = "error"
+             dismissible
+             class="alert"
+    > CONTRASENA INCORRECTA
+    </v-alert>
   </v-app>
 </template>
 
@@ -84,8 +92,8 @@ export default {
       result: null,
       rememberMe: false,
       showPassword: false,
-      correctUser: true,
-      correctPassword: true,
+      incorrectUser: false,
+      incorrectPassword: false,
     }
   },
 
@@ -120,9 +128,9 @@ export default {
         } catch (e) {
           if (e.code == 4){
               if (e.details == "Username does not exist"){
-                this.correctUser = false
+                this.incorrectUser = true
               }else{
-                this.correctPassword = false
+                this.incorrectPassword = true
               }
           }
           this.setResult(e)
@@ -137,7 +145,7 @@ export default {
 
 <style scoped>
   .logIn{
-    margin-top: 10rem;
+    margin-top: 7rem;
   }
 
   .mainTitle{
@@ -161,6 +169,11 @@ export default {
   .img1{
     height: 170px;
     width: 150px;
+    margin: auto;
+  }
+
+  .alert{
+    width: 20rem;
     margin: auto;
   }
 </style>
