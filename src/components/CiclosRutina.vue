@@ -1,7 +1,23 @@
 <template>
     <div class="box">
-        <h1>Rutina {{this.$route.params.id}}</h1>
+      <v-row justify="center">
+        <v-col md="auto">
+        <h1>Rutina {{this.id}}</h1>
+        </v-col>
+        <v-col md="auto">
+        <v-btn color="green" @click="open = true"> EDITAR RUTINA
+          <v-icon>
+            mdi-pencil
+          </v-icon></v-btn>
+        </v-col>
 
+        <v-col md="auto">
+        <v-btn color="red" @click="deleteRoutine()"> ELIMINAR RUTINA
+        <v-icon>
+          mdi-delete
+        </v-icon></v-btn>
+        </v-col>
+      </v-row>
             <v-col md="auto">
               <v-row justify="center">
             <v-text-field       solo = true
@@ -72,13 +88,76 @@
       <router-view>
       </router-view>
     </v-col>
+
+      <v-overlay v-if="open">
+        <v-card class="cycleCard" height="27rem" width="35rem" >
+          <v-row justify="center">
+            <v-col md="auto">
+              <h3>Nombre</h3>
+              <v-text-field
+                  solo
+                  outlined
+                  label="Ingrese el nombre de su rutina"
+                  class ="textField"
+                  background-color= #6797C5
+                  color = "white"
+                  v-model="newName"
+              />
+              <h3>Detalle</h3>
+              <v-text-field
+                  solo
+                  outlined
+                  label="Ingrese el nombre de su rutina"
+                  class ="textField"
+                  background-color= #6797C5
+                  color = "white"
+                  v-model="newDetails"
+              />
+              <h3>Dificultad</h3>
+              <v-select solo = true
+                        outlined = true
+                        label="Ingrese el nombre de su rutina"
+                        background-color= #6797C5
+                        color = "white"
+                        class="textField"
+                        :items="diffTypes"
+                        v-model="newDifficulty">
+
+              </v-select>
+              <v-row >
+
+                <v-btn
+                    class = "btn1"
+                    elevation="3"
+                    rounded
+                    color= #003D75
+                    x-large
+                    @click="modifyRoutine()"
+                >
+                  EDITAR RUTINA
+                </v-btn>
+                <v-btn @click="open=false"
+                       class = "btn1"
+                       elevation="3"
+                       rounded
+                       color= #003D75
+                       x-large>
+                  CANCELAR
+                </v-btn>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-overlay>
     </div>
   </template>
 
 <script>
 import { useCycleStore } from '@/store/CycleStore';
 import { mapActions } from 'pinia';
-import {Cycle} from "@/api/routine"
+import {Cycle, Routine} from "@/api/routine"
+import router from "@/router";
+import {useRoutineStore} from "@/store/RoutineStore";
 // import EjerciciosCiclo from "@/components/EjerciciosCiclo.vue"
 
 export default {
@@ -98,14 +177,14 @@ export default {
             repetitions: 1,
           typeError: false,
           edit: false,
+          id: this.$route.params.id,
+          newName: this.$route.params.name,
+          newDetails:this.$route.params.detail,
+          newDifficulty: this.$route.params.difficulty,
+          open: false,
+          diffTypes: ["rookie", "beginner","intermediate","advanced","expert"],
         }
     },
-    // props: {
-    //     routineId: {
-    //         type: Number,
-    //         required: true,
-    //     },
-    // },
     methods: {
         ...mapActions(useCycleStore, {
         $createCycle: 'createCycle',
@@ -114,12 +193,33 @@ export default {
         $getCycle: 'getCycle',
         $getAllCycles: 'getAllCycles',
         }),
+
+      ...mapActions(useRoutineStore, {
+        $modifyRoutine: 'modifyRoutine',
+        $deleteRoutine: 'deleteRoutine',
+      }),
+
         setResult(e) {
             this.result = JSON.stringify(e);
         },
-        // selected(id) {
-        //     this.cycle = id;
-        // },
+
+
+        async deleteRoutine(){
+          await this.$deleteRoutine(this.id)
+          router.push('/mis_rutinas')
+        } ,
+
+      async modifyRoutine(){
+          try {
+            const routine = new Routine(this.id, this.newName, this.newDetails, this.newDifficulty)
+            console.log("hola")
+            await this.$modifyRoutine(routine)
+            this.open = false
+          }catch (e) {
+            this.setResult(e);
+          }
+      } ,
+
         async deleteCycle(id) {
             await this.$deleteCycle(this.$route.params.id, id);
             this.getAllCycles();
