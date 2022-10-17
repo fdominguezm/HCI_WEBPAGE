@@ -1,82 +1,22 @@
 <template>
   <div>
-    <div v-show="exerciseCard">
-    <v-overlay>
-    <v-card>
-      <v-card-title>Cree su ejercicio!</v-card-title>
-      <v-card-subtitle>
-        Complete todos los campos requeridos para agregar su nuevo ejercicio.
-      </v-card-subtitle>
-      <v-form ref="form"
-      v-model="valid"
-      lazy-validation>
-      <v-card-actions>
-        <v-row>
-          <v-col>
-            <v-text-field label="Nombre"
-                          :rules="nameRule"
-                          v-model="exerciseName"
-            >
-            </v-text-field>
-          </v-col>
-          <v-col>
-            <v-text-field
-                label="Descripción"
-                :rules="descriptionRule"
-                v-model="exerciseDesc">
-            </v-text-field>
-          </v-col>
-        </v-row>
-        </v-card-actions>
+    <div v-if="exerciseCard">
+      <AddExerciseCard @show="showCard()"
+      :editing="editing"
+      :exerciseName="this.exerciseName"
+      :exerciseDesc="this.exerciseDesc"
+      :exerciseType="this.exerciseType"
+      :currentId="this.currentId"/>
 
-        <v-card-actions>
-        <v-row>
-          <v-col>
-            <v-select label="Tipo de ejercicio"
-                :items="exerciseTypes"
-                :rules="typeRule"
-                      v-model="exerciseType">
-            </v-select>
-          </v-col>
-        </v-row>
-          </v-card-actions>
-      <v-card-actions>
-        <v-row>
-          <v-col>
-            <v-text-field
-                label="Link de foto"
-            >
-            </v-text-field>
-          </v-col>
-          <v-col>
-            <v-text-field
-                label="Link de video">
-            </v-text-field>
-          </v-col>
-        </v-row>
-      </v-card-actions>
-          <v-card-actions>
-        <v-btn @click="showCard()">
-          Close
-        </v-btn>
-            <v-btn :disabled="editing"
-                @click="addExercise()">
-              Add
-            </v-btn>
-            <v-btn :disabled="!editing"
-                @click="editExercise()">
-              Edit
-            </v-btn>
-      </v-card-actions>
-        </v-form>
-    </v-card>
-    </v-overlay>
     </div>
+    <v-row >
+      <v-col cols="3">
     <v-card
-        class=""
         max-width="300"
+        color= #003D75
+
     >
-      <v-card-title class="white--text orange darken-4">
+      <v-card-title class="white--text darken-4">
         Agregar Ejercicio
 
         <v-spacer></v-spacer>
@@ -104,15 +44,18 @@
             <v-btn
                 fab
                 small
-                color="primary"
+                color="#003D75"
+                @click="displayExercise(item.id)"
             >
-              {{ item.id }}
+
+              <v-icon color="white">
+                mdi-dumbbell
+              </v-icon>
             </v-btn>
           </v-list-item-action>
 
           <v-list-item-content>
             <v-list-item-title>
-              <!-- Ejercicio <strong>N {{ item.id }}</strong> -->
               {{item.name}}
             </v-list-item-title>
           </v-list-item-content>
@@ -132,10 +75,14 @@
             </div>
           </v-list-item-action>
         </v-list-item>
-
         <v-divider></v-divider>
       </template>
     </v-virtual-scroll>
+      </v-col>
+      <v-col>
+        <router-view/>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -143,11 +90,13 @@
 import {mapState, mapActions} from 'pinia';
 import {useSecurityStore} from "@/store/SecurityStore";
 import {useExerciseStore} from "@/store/ExerciseStore";
-import {Exercise} from "@/api/exercise";
-
+import AddExerciseCard from "@/components/AddExerciseCard";
+import router from "@/router";
 
 export default {
   name: "ExerciseList",
+  components: { AddExerciseCard},
+
   data() {
     return {
       exerciseName: "",
@@ -156,15 +105,14 @@ export default {
       currentId: null,
       valid : true,
       editing: false,
+      notDisplayed: true,
       benched: 0,
       exerciseCard: false,
       exerciseTypes: ["exercise", "rest"],
       controller: null,
-      nameRule: [n => !!n || 'Name is required'],
-      descriptionRule: [d => !!d || 'Description is required'],
-      typeRule: [t => !!t || 'Type is required']
     }
   },
+
   watch: {
     $items(newItem) {
       return newItem
@@ -186,16 +134,7 @@ export default {
         $get: 'get',
         $getAll: 'getAll',
       }),
-      async getAllExercises() {
-            try {
-                this.controller = new AbortController()
-                const exercise = await this.$getAllExercises(this.controller);
-                this.controller = null
-                this.setResult(exercise)
-            } catch(e) {
-                this.setResult(e)
-            }
-        },
+
 // functions
     showCard(id,exerciseName, exerciseDesc, exerciseType,) {
       if (this.exerciseCard == true) {
@@ -206,22 +145,12 @@ export default {
         this.exerciseDesc = exerciseDesc;
         this.exerciseType = exerciseType;
         this.exerciseCard = true;
+
       }
     },
-    async addExercise() {
-      if(this.validate()) {
-        try {
-          this.showCard()
-          const exercise = new Exercise(null, this.exerciseName, this.exerciseDesc, this.exerciseType)
-          await this.$create(exercise)
-          this.$getAll();
 
-        } catch (e) {
-          console.log(e)
-        }
-      }
-      return;
-
+    isDisplayed() {
+      this.notDisplayed = false
     },
 
     isEditing() {
@@ -237,11 +166,9 @@ export default {
       this.$getAll()
     },
 
-    async editExercise() {
-      const exercise = new Exercise(this.currentId, this.exerciseName, this.exerciseDesc, this.exerciseType);
-      await this.$modify(exercise);
-      this.$getAll()
-      this.showCard()
+    displayExercise(id) {
+      this.isDisplayed()
+      router.push({path:`/ejercicios/${id}`,params: {exercise_id: id}})
     },
 
     validate() {

@@ -10,6 +10,7 @@ import PerfilView from "@/views/PerfilView";
 import RutinaView from "@/views/RutinaView";
 import CiclosRutina from "@/components/CiclosRutina";
 import EjerciciosCiclo from "@/components/EjerciciosCiclo";
+import ExerciseDisplay from "@/components/ExerciseDisplay";
 
 Vue.use(VueRouter)
 
@@ -22,7 +23,14 @@ const routes = [
   {
     path: '/ejercicios',
     name: 'ejercicios',
-    component: EjerciciosView
+    component: EjerciciosView,
+    children: [
+      {
+        path: ':exercise_id',
+        props: true,
+        component: ExerciseDisplay
+      }
+    ]
   },
   {
     path: '/todas_las_rutinas',

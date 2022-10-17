@@ -1,23 +1,29 @@
 <template>
-<div>
   <v-main>
     <SubBar/>
-    <ExerciseList class="exerciseMenu"/>
+    <ExerciseList class="exerciseList"/>
   </v-main>
-</div>
 </template>
 
 <script>
 import ExerciseList from "@/components/ExerciseList";
 import SubBar from "@/components/SubBar";
+
 export default {
   name: "EjerciciosView",
-  components: {SubBar, ExerciseList}
+  components: { SubBar, ExerciseList},
+  data() {
+    return {
+
+    }
+  },
+
 }
 </script>
 
 <style scoped>
-  .exerciseMenu {
-    margin-left: 50px;
-  }
+.exerciseList{
+  margin-top: 50px;
+  margin-left: 25px;
+}
 </style>
