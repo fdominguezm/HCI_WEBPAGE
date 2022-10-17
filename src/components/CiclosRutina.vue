@@ -1,38 +1,75 @@
 <template>
     <div class="box">
         <h1>Rutina {{this.$route.params.id}}</h1>
-        
-        <div class="btns">
-            <v-card v-for="cycle in cycles" :key="cycle.id" color="#6797C5">
-                <v-card-title>{{cycle.name}}</v-card-title>
-                <v-card-actions>
-                    <router-link :to="{path: `/rutina/${$route.params.id}/ciclo/${cycle.id}`, params: {cycleId: cycle.id}}">
-                        <v-btn color="green">
-                            <v-icon >
-                                mdi-pencil
-                            </v-icon>
-                        </v-btn>
-                    </router-link> 
-                    <v-btn color="red" @click="deleteCycle(cycle.id)">
-                        <v-icon>
-                        mdi-delete
-                        </v-icon>
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-            <!-- <textarea cols="100" rows="10" v-model="result"></textarea> -->
-        </div>
 
-        <div class="btns">
-            <v-btn @click="createCycle()">+</v-btn>
-            <v-text-field label="name" v-model="name" outlined></v-text-field>
-            <v-text-field label="detail" v-model="detail" outlined></v-text-field>
-            <v-text-field label="type" hint="warmup, exercise, cooldown" v-model="type" outlined></v-text-field>
-            <v-text-field label="repetitions" hint="Number" v-model="repetitions" outlined></v-text-field>
+            <v-col md="auto">
+              <v-row justify="center">
+            <v-text-field       solo = true
+                                outlined = true
+                                label="Nombre"
+                                class ="textField"
+                                background-color= #6797C5
+                                color = "white" v-model="name" ></v-text-field>
+            <v-text-field label="Detalle" solo = true
+                          outlined = true
+                          class ="textField"
+                          background-color= #6797C5
+                          color = "white"
+                          v-model="detail" ></v-text-field>
+            <v-text-field label="Tipo"
+                          solo = true
+                          outlined = true
+                          class ="textField"
+                          background-color= #6797C5
+                          color = "white"
+                          hint="El tipo es warmup, exercise o cooldown" v-model="type"
+                          :error-messages="typeError?'El tipo debe ser warmup, exercise o cooldown': null"></v-text-field>
+            <v-text-field label="Cantidad de repeticiones" hint="Number"
+                          solo
+                          outlined
+                          class ="textField"
+                          background-color= #6797C5
+                          color = "white"
+                          v-model="repetitions" ></v-text-field>
+                <v-btn           class = "btn1"
+                                 elevation="3"
+                                 rounded
+                                 color= #003D75
+                                 x-large
+                                 @click="createCycle()">Agregar Ciclo</v-btn>
+              </v-row>
+
+            </v-col>
+
             <!-- <v-text-field label="counter" v-model="counter" outlined></v-text-field> -->
-        </div>
 
-        <router-view></router-view>
+      <router-view>
+      </router-view>
+
+      <div class="cycles">
+        <v-card v-for="cycle in cycles" :key="cycle.id" color="#6797C5" class="card">
+          <v-row justify="center">
+          <v-card-title >{{cycle.name}}</v-card-title>
+          </v-row>
+          <v-row justify="center">
+          <v-card-actions>
+<!--            <router-link :to="{path: `/rutina/${$route.params.id}/ciclo/${cycle.id}`, params: {cycleId: cycle.id}}">-->
+              <v-btn color="green">
+                <v-icon @click="$router.push({path: `/rutina/${$route.params.id}/ciclo/${cycle.id}`, params: {cycleId: cycle.id}})">
+                  mdi-pencil
+                </v-icon>
+              </v-btn>
+<!--            </router-link>-->
+            <v-btn color="red" @click="deleteCycle(cycle.id)">
+              <v-icon>
+                mdi-delete
+              </v-icon>
+            </v-btn>
+          </v-card-actions>
+          </v-row>
+        </v-card>
+        <!-- <textarea cols="100" rows="10" v-model="result"></textarea> -->
+      </div>
     </div>
 </template>
 
@@ -57,6 +94,8 @@ export default {
             detail: null,
             type: null,
             repetitions: 1,
+          typeError: false,
+          edit: false,
         }
     },
     // props: {
@@ -85,6 +124,9 @@ export default {
         },
         async createCycle () {
             try {
+                if (this.type != "warmup" && this.type!= "exercise" && this.type != "cooldown"){
+                  this.typeError = true;
+                }
                 const cycle = new Cycle(null, this.name, this.detail, this.type, this.counter+1, new Number(this.repetitions));
                 await this.$createCycle(new Number(this.$route.params.id), cycle)
                 this.counter++
@@ -130,8 +172,26 @@ export default {
 .box h1 {
     text-align: center;
 }
-.btns {
-    display: flex;
-    flex-wrap: wrap;
+.cycles {
+  margin: 1% 5%;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-evenly;
+}
+
+.btn1{
+  color: white;
+  width: 15rem;
+}
+
+.card{
+  margin: 1rem;
+  width: 10rem;
+  height: 7rem;
+}
+
+.textField {
+  width: auto;
+  margin: auto;
 }
 </style>
