@@ -42,17 +42,14 @@
             </v-col>
 
             <!-- <v-text-field label="counter" v-model="counter" outlined></v-text-field> -->
-
-      <router-view>
-      </router-view>
-
-      <div class="cycles">
-        <v-card v-for="cycle in cycles" :key="cycle.id" color="#6797C5" class="card">
-          <v-row justify="center">
-          <v-card-title >{{cycle.name}}</v-card-title>
-          </v-row>
-          <v-row justify="center">
-          <v-card-actions>
+        <v-col>
+          <div class="cycles">
+            <v-card v-for="cycle in cycles" :key="cycle.id" color="#6797C5" class="card">
+              <v-row justify="center">
+                <v-card-title >{{cycle.name}}</v-card-title>
+              </v-row>
+              <v-row justify="center">
+                <v-card-actions>
 <!--            <router-link :to="{path: `/rutina/${$route.params.id}/ciclo/${cycle.id}`, params: {cycleId: cycle.id}}">-->
               <v-btn color="green">
                 <v-icon @click="$router.push({path: `/rutina/${$route.params.id}/ciclo/${cycle.id}`, params: {cycleId: cycle.id}})">
@@ -70,8 +67,13 @@
         </v-card>
         <!-- <textarea cols="100" rows="10" v-model="result"></textarea> -->
       </div>
+    </v-col>
+    <v-col>
+      <router-view>
+      </router-view>
+    </v-col>
     </div>
-</template>
+  </template>
 
 <script>
 import { useCycleStore } from '@/store/CycleStore';
